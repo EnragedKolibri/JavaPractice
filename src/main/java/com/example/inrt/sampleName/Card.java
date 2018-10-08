@@ -1,39 +1,33 @@
 package com.example.inrt.sampleName;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Card {
+
+    private Integer id;
 
     private String title;
     private String url;
     private String description;
 
-    public Card(String title,String url,String description)
+    public Card(){}
+
+    public Card(String title,String url,String description, Integer id)
     {
+        setId(id);
         setTitle(title);
         setUrl(url);
         setDescription(description);
     }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

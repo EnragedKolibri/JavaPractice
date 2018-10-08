@@ -1,19 +1,16 @@
 package com.example.inrt;
 
+import com.example.inrt.exceptions.BadRequest;
 import com.example.inrt.sampleName.Card;
 import org.springframework.boot.jackson.JsonObjectSerializer;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import com.google.gson.*;
-import org.springframework.web.bind.annotation.RestController;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class Control {
@@ -39,13 +36,29 @@ public class Control {
 
 
     @PostMapping(value = "/cards/add",consumes ={"application/json"})
-    public String add (Card card)
+    public Card add (@RequestBody Card card)
     {
 
-//        card.add("id",JsonElement );
-//        cards.add(card.);
-        Gson gson = new Gson();
-        return gson.toJson(card);
+        Optional<String> validate = validate(card);
+        if(validate.isPresent()) {
+            throw new BadRequest("Invalid card " + validate.get());
+        }
+        card.setId(id++);
+        cards.add(card);
+        return card;
+    }
+
+    @ExceptionHandler(BadRequest.class)
+    public ResponseEntity handleBadReq(BadRequest e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    private Optional<String> validate(Card card) {
+        if (card.getDescription() == null) {
+            return Optional.of("Invalid description");
+        }
+
+        return Optional.empty();
     }
 
 
