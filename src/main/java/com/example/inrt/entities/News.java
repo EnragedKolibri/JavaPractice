@@ -1,4 +1,5 @@
-package com.example.inrt.sampleName;
+package com.example.inrt.entities;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,23 +12,23 @@ import lombok.ToString;
 @ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Card {
+public class News {
 
     private Integer id;
 
     private String title;
-    private String url;
+    private String image_url;
     private String description;
+    private String source_url;
 
-    public Card(){}
-
-    public Card(String title,String url,String description, Integer id)
+    public News(){}
+    public News(Integer id,String title,String image_url,String description,String source_url)
     {
         setId(id);
         setTitle(title);
-        setUrl(url);
         setDescription(description);
+        setImage_url(image_url);
+        setSource_url(source_url);
     }
-
 
 }
