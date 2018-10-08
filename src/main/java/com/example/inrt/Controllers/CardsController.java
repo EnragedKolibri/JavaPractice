@@ -15,18 +15,51 @@ public class CardsController {
     private List<Card> cards = new ArrayList<>();
 
     @PostMapping(value = "cards/update",consumes = {"application/json"})
-    public Card update(Card card)
+    public Card update(@RequestBody Card card)
     {
-        Optional<String> validate = validateEditCard(card);
+       Optional<String> validate = validateEditCard(card);
         if (validate.isPresent())
         {
             throw new BadRequest("Invalid card " + validate.get());
         }
 
-        //cards.forEach(card1 -> card1.getId());
-
-        return card;
+        return updateCard(cards.get(findCardByID(cards,card)),card);
     }
+
+    private Integer findCardByID(List<Card> cards,Card toFind)
+    {
+        boolean found = false;
+        int i;
+        for (i = 0; !found ;i++)
+        {
+            if (cards.get(i).getId() == toFind.getId())
+            {
+                found = true;
+            }
+
+        }
+        return i-1;
+    }
+
+    private Card updateCard(Card taken,Card given)
+    {
+        if (given.getDescription() != null)
+        {
+            taken.setDescription(given.getDescription());
+        }
+        if(given.getTitle() != null)
+        {
+            taken.setTitle(given.getTitle());
+        }
+        if(given.getUrl() != null)
+        {
+            taken.setUrl(given.getUrl());
+        }
+
+        return cards.get(findCardByID(cards,given));
+
+    }
+
 
     @GetMapping(value = "cards/all")
     public List<Card> allCards()
