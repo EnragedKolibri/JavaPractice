@@ -13,6 +13,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Card {
 
+
     private Integer id;
 
     private String title;

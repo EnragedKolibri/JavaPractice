@@ -11,8 +11,8 @@ import java.util.*;
 @RestController
 public class CardsController {
 
-    private int id = 1;
-    private List<Card> cards = new ArrayList<>();
+    private int id = 0;
+    private Map<Integer,Card> cardMap = new HashMap<>();
 
     @PostMapping(value = "cards/update",consumes = {"application/json"})
     public Card update(@RequestBody Card card)
@@ -22,49 +22,40 @@ public class CardsController {
         {
             throw new BadRequest("Invalid card " + validate.get());
         }
-
-        return updateCard(cards.get(findCardByID(cards,card)),card);
+        Card cardExist = cardMap.get(card.getId());
+        return updateCard(cardExist,card);
     }
 
-    private Integer findCardByID(List<Card> cards,Card toFind)
+
+    private Card updateCard(Card cardExist, Card given)
     {
-        boolean found = false;
-        int i;
-        for (i = 0; !found ;i++)
+        if(cardExist==null)
         {
-            if (cards.get(i).getId() == toFind.getId())
-            {
-                found = true;
-            }
-
+            throw new BadRequest("Id is not exist");
         }
-        return i-1;
-    }
 
-    private Card updateCard(Card taken,Card given)
-    {
         if (given.getDescription() != null)
         {
-            taken.setDescription(given.getDescription());
+            cardExist.setDescription(given.getDescription());
         }
         if(given.getTitle() != null)
         {
-            taken.setTitle(given.getTitle());
+            cardExist.setTitle(given.getTitle());
         }
         if(given.getUrl() != null)
         {
-            taken.setUrl(given.getUrl());
+            cardExist.setUrl(given.getUrl());
         }
 
-        return cards.get(findCardByID(cards,given));
+        return cardExist;
 
     }
 
 
     @GetMapping(value = "cards/all")
-    public List<Card> allCards()
+    public Collection<Card> allCards()
     {
-        return cards;
+        return cardMap.values();
     }
 
     @PostMapping(value = "/cards/add",consumes ={"application/json"})
@@ -74,8 +65,10 @@ public class CardsController {
         if(validate.isPresent()) {
             throw new BadRequest("Invalid card " + validate.get());
         }
-        card.setId(id++);
-        cards.add(card);
+        id++;
+        card.setId(id);
+
+        cardMap.put(id, card);
         return card;
     }
 
