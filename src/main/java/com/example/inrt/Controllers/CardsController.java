@@ -42,9 +42,9 @@ public class CardsController {
         {
             cardExist.setTitle(given.getTitle());
         }
-        if(given.getUrl() != null)
+        if(given.getImage_url() != null)
         {
-            cardExist.setUrl(given.getUrl());
+            cardExist.setImage_url(given.getImage_url());
         }
 
         return cardExist;
@@ -84,7 +84,7 @@ public class CardsController {
         if (card.getTitle() == null) {
             return Optional.of("Invalid title");
         }
-        if (card.getUrl() == null) {
+        if (card.getImage_url() == null) {
             return Optional.of("Invalid url");
         }
         return Optional.empty();

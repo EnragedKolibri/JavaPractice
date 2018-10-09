@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Entity;
+import org.springframework.data.annotation.Id;
 
+@Entity
 @Getter
 @Setter
 @ToString
@@ -13,11 +16,11 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Card {
 
-
+    @Id
     private Integer id;
 
     private String title;
-    private String url;
+    private String image_url;
     private String description;
 
     public Card(){}
@@ -26,7 +29,7 @@ public class Card {
     {
         setId(id);
         setTitle(title);
-        setUrl(url);
+        setImage_url(url);
         setDescription(description);
     }
 
